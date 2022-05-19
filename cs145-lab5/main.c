@@ -12,6 +12,7 @@ int main(void)
 {
     char i, k;
     char str[LCDSIZE] = {0};
+    char res[LCDSIZE] = {0};
 
     // initialize lcd
     lcd_init();
@@ -26,11 +27,16 @@ int main(void)
 
         k = get_key();
         if (k == 12)
-            calculate(str);
-        else if (k)
-            str[i++] = (char)translate(k);
+        {
+            lcd_clr();
+            sprintf(res, "%.4f", calculator(i + 1, str));
+            sprintf(str, "                ");
+            i = 0;
+        }
 
-        char t[LCDSIZE] = "byebye";
-        display(str, t);
+        else if (k)
+            str[i++] = translate(k);
+
+        display(str, res);
     }
 }

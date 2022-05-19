@@ -1,25 +1,20 @@
+#include <stdio.h>
 #include "lcd.h"
 
 #define SIZE 20
 
-struct data_t
+struct stack_t
 {
-    int data[SIZE];
+    float data[SIZE];
     int top;
 };
 
-struct symbo_t
-{
-    char symbol[SIZE];
-    int top;
-};
-
-int calculate(const char *str[])
+int calculate(const char *str)
 {
     return 0;
 }
 
-void display(const char *str1[], const char *str2[])
+void display(const char *str1, const char *str2)
 {
     lcd_pos(0, 0);
     lcd_puts2(str1);
@@ -67,4 +62,76 @@ unsigned char translate(unsigned char k)
         k += 30;
     }
     return k;
+}
+void push(struct stack_t *stack, float v)
+{
+    stack->data[++stack->top] = v;
+}
+
+float pop(struct stack_t *stack)
+{
+    return stack->data[stack->top--];
+}
+
+float calculator(unsigned char argc, char *argv)
+{
+    struct stack_t nums;
+    float currNum = 0.0;
+    unsigned char prevOP = '+';
+
+    nums.top = -1;
+    unsigned char fp = 0;
+
+    for (unsigned char i = 0; i < argc; ++i)
+    {
+        unsigned char k = argv[i];
+        if ('0' <= k && k <= '9')
+        {
+            if (fp)
+                currNum += 1.0 * (k - '0') / ((i - fp) * 10);
+            else
+                currNum = currNum * 10 + k - '0';
+        }
+        else if ('.' == k)
+        {
+            fp = i;
+        }
+        else
+        {
+            fp = 0;
+            if ('+' == prevOP)
+            {
+                push(&nums, currNum);
+                prevOP = k;
+                currNum = 0;
+            }
+            else if ('-' == prevOP)
+            {
+                push(&nums, -currNum);
+                prevOP = k;
+                currNum = 0;
+            }
+            else if ('*' == prevOP)
+            {
+                float prevNum = pop(&nums);
+                push(&nums, prevNum * currNum);
+                prevOP = k;
+                currNum = 0;
+            }
+            else if ('/' == prevOP)
+            {
+                float prevNum = pop(&nums);
+                push(&nums, prevNum / currNum);
+                prevOP = k;
+                currNum = 0;
+            }
+        }
+    }
+
+    float res = 0;
+    while (nums.top >= 0)
+    {
+        res += pop(&nums);
+    }
+    return res;
 }
