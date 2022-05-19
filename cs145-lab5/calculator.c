@@ -63,6 +63,7 @@ unsigned char translate(unsigned char k)
     }
     return k;
 }
+
 void push(struct stack_t *stack, float v)
 {
     stack->data[++stack->top] = v;
@@ -100,13 +101,9 @@ float calculator(unsigned char argc, char *argv)
         {
             fp = 0;
             if ('+' == prevOP)
-            {
                 push(&nums, currNum);
-            }
             else if ('-' == prevOP)
-            {
                 push(&nums, -currNum);
-            }
             else if ('*' == prevOP)
             {
                 float prevNum = pop(&nums);
@@ -124,8 +121,7 @@ float calculator(unsigned char argc, char *argv)
 
     float res = 0;
     while (nums.top >= 0)
-    {
         res += pop(&nums);
-    }
+
     return res;
 }
