@@ -9,11 +9,6 @@ struct stack_t
     int top;
 };
 
-int calculate(const char *str)
-{
-    return 0;
-}
-
 void display(const char *str1, const char *str2)
 {
     lcd_pos(0, 0);
@@ -94,9 +89,7 @@ float calculator(unsigned char argc, char *argv)
                 currNum = currNum * 10 + k - '0';
         }
         else if ('.' == k)
-        {
             fp = i;
-        }
         else
         {
             fp = 0;
