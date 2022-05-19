@@ -18,6 +18,8 @@ int main(void)
     avr_wait(SEC);
     lcd_clr();
 
+    i = k = 0;
+
     while (1)
     {
         avr_wait(SEC / 2);
