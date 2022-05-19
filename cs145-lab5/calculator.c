@@ -102,29 +102,23 @@ float calculator(unsigned char argc, char *argv)
             if ('+' == prevOP)
             {
                 push(&nums, currNum);
-                prevOP = k;
-                currNum = 0;
             }
             else if ('-' == prevOP)
             {
                 push(&nums, -currNum);
-                prevOP = k;
-                currNum = 0;
             }
             else if ('*' == prevOP)
             {
                 float prevNum = pop(&nums);
                 push(&nums, prevNum * currNum);
-                prevOP = k;
-                currNum = 0;
             }
             else if ('/' == prevOP)
             {
                 float prevNum = pop(&nums);
                 push(&nums, prevNum / currNum);
-                prevOP = k;
-                currNum = 0;
             }
+            prevOP = k;
+            currNum = 0;
         }
     }
 
