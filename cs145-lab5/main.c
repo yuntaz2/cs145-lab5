@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "avr.h"
 #include "calculator.h"
 #include "keypad.h"
